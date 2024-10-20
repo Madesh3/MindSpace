@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="assets/logo_main_no_background.png" alt="Company Icon" class="icon">
+        </div>
+        <div class="question">
+            <p></p>
+            <p>How shall we start? 🌟</p>
+        </div>
+        <div class="buttons">
+            <button class="btn motivated" data-emotion="Locked in, Let's go! 🚀">Locked in, Let's go! 🚀</button>
+            <button class="btn tired" data-emotion="Nice and slow please. 🐢">Nice and slow please. 🐢</button>
+            <button class="btn excited" data-emotion="I am not sure. 😕">I am not sure. 😕</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+        // Initialize Firebase Realtime Database
+        const database = getDatabase();
+
+        // Handle button clicks
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const startResponse = this.getAttribute('data-emotion');
+                const studentID = localStorage.getItem('studentID'); // Retrieve the Student ID from localStorage
+
+                // Create a reference to the student's responses
+                const studentRef = ref(database, `responses/${studentID}`);
+
+                // Store the response in Firebase using a descriptive key
+                set(ref(database, `responses/${studentID}/how_start`), {
+                    question: "How shall we start?",
+                    answer: startResponse
+                }).then(() => {
+                    // Set the completion timestamp
+                    const completionTime = new Date().getTime(); // Current time in milliseconds
+                    set(ref(database, `responses/${studentID}/completion_time`), completionTime);
+
+                    console.log('Start response submitted:', startResponse);
+                    // Redirect to the thank you page
+                    window.location.href = 'thankyou.html'; // Navigate to the thank you page
+                }).catch((error) => {
+                    console.error('Error submitting start response:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

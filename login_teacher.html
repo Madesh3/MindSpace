@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Space Teacher Login</title>
+    <link rel="stylesheet" href="login_teacher.css"> <!-- Linking the renamed CSS file -->
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="left">
+            <h1>Mind Space</h1>
+            <p>Empowering Classrooms, One Mind at a Time</p>
+        </div>
+        <div class="right">
+            <div class="form-group">
+                <div class="icon">👤</div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            <div class="buttons">
+                <button class="sign-in" id="signInBtn">Sign in</button>
+                <button class="sign-up" id="signUpBtn">Sign up</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+    // Hardcoded teacher credentials
+    const teachers = [
+        { email: "calhacks@gmail.com", password: "password" },
+        { email: "mindspace@gmail.com", password: "password" },
+        { email: "teacher123@edu.com", password: "password" }
+    ];
+
+    // Function to handle the sign-in process
+    function signIn() {
+        const emailInput = document.getElementById('email').value;
+        const passwordInput = document.getElementById('password').value;
+
+        // Check the entered credentials against hardcoded values
+        const teacher = teachers.find(teacher => 
+            teacher.email === emailInput && teacher.password === passwordInput
+        );
+
+        if (teacher) {
+            // Successful login
+            console.log('Login successful for:', emailInput);
+            window.location.href = 'teacher_dashboard1.html'; // Redirect to the teacher dashboard page
+        } else {
+            // Failed login
+            alert('Invalid email or password. Please try again.');
+        }
+    }
+
+    // Sign in button event listener
+    document.getElementById('signInBtn').addEventListener('click', signIn);
+
+    // Add event listener for pressing "Enter" key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            signIn(); // Trigger sign-in when Enter is pressed
+        }
+    });
+</script>
+</body>
+</html>

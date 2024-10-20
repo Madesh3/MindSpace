@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Space Student Login</title>
+    <link rel="stylesheet" href="login_teacher.css"> <!-- Linking the CSS file -->
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="left">
+            <h1>Mind Space</h1>
+            <p>Empowering Classrooms, One Mind at a Time</p>
+        </div>
+        <div class="right">
+            <div class="form-group">
+                <div class="icon">👤</div>
+            </div>
+            <div class="form-group">
+                <label for="student-id">Student ID</label>
+                <input type="text" id="student-id" placeholder="Enter your Student ID">
+            </div>
+            <div class="buttons">
+                <button class="sign-in" id="sign-in-btn">Sign in</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+        // Initialize Firebase Realtime Database
+        const database = getDatabase();
+
+        // Function to check if the student can take the survey
+        function checkSurveyEligibility(studentID) {
+            const studentRef = ref(database, `responses/${studentID}/completion_time`);
+            // Fetch the completion time
+            get(studentRef).then(snapshot => {
+                if (snapshot.exists()) {
+                    const completionTime = snapshot.val();
+                    const currentTime = new Date().getTime();
+                    const cooldownPeriod = (2 * 60) * 1000; // Example: 2 minutes in milliseconds
+
+                    // Check if the cooldown period has expired
+                    if (currentTime - completionTime < cooldownPeriod) {
+                        const remainingTime = cooldownPeriod - (currentTime - completionTime);
+                        const seconds = Math.floor((remainingTime / 1000));
+                        alert(`You need to wait ${seconds} seconds before taking the survey again.`);
+                    } else {
+                        // If eligible, proceed to the first question
+                        startSurvey(studentID);
+                    }
+                } else {
+                    // If no completion time exists, allow access to the survey
+                    startSurvey(studentID);
+                }
+            }).catch((error) => {
+                console.error('Error fetching completion time:', error);
+            });
+        }
+
+        // Function to start the survey and save the Student ID
+        function startSurvey(studentID) {
+            localStorage.setItem('studentID', studentID); // Store the Student ID in localStorage
+            window.location.href = 'firstquestion.html'; // Redirect to the first question page
+
+            // Also, save the completion time for future reference (optional, adjust based on logic)
+            const completionTime = new Date().getTime(); // Current time
+            set(ref(database, `responses/${studentID}/completion_time`), completionTime);
+        }
+
+        // Handle sign-in button click
+        function handleSignIn() {
+            const studentID = document.getElementById('student-id').value; // Get the value from the input
+            if (studentID) {
+                checkSurveyEligibility(studentID); // Check eligibility before proceeding
+            } else {
+                alert('Please enter your Student ID.'); // Alert if the Student ID is empty
+            }
+        }
+
+        document.getElementById('sign-in-btn').addEventListener('click', handleSignIn);
+
+        // Add event listener for pressing "Enter" key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                handleSignIn(); // Trigger sign-in when Enter is pressed
+            }
+    });
+</script>
+</body>
+</html>

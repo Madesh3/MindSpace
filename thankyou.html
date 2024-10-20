@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .thankyou-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 50px;
+            font-size: 1.5rem;
+        }
+
+        .thankyou-message {
+            text-align: center;
+            font-size: 1.2rem;
+        }
+    </style>
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+    <div class="thankyou-container">
+        <div class="logo">
+            <span>Mind</span>
+            <img src="assets/logo_main_no_background.png" alt="Company Icon" class="icon">
+            <span>Space</span>
+        </div>
+        <div class="thankyou-message">
+            <p>Thank you.</p>
+            <p>Wishing you a pleasant day :)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Sleep Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 640px;
+            text-align: center;
+            position: relative;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .rested {
+            background-color: #A8D5BA;
+        }
+        .still_sleepy {
+            background-color: #A8C9E5;
+        }
+        .weak {
+            background-color: #E5A8A8;
+        }
+        .dead_inside {
+            background-color: #F2BC8D;
+        }
+        .percentage {
+            font-weight: bold;
+        }
+        /* Arrow button style */
+        .arrow-button {
+            position: fixed; /* Fixed position at bottom-right */
+            bottom: 20px;
+            right: 20px;
+            font-size: 24px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .arrow-button svg {
+            width: 30px;
+            height: 30px;
+            fill: #333;
+        }
+        .arrow-button:hover svg {
+            fill: #000;
+        }
+    </style>
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Hi Teacher</h2>
+        <p>Below are the results from your class today:</p>
+
+        <div class="bar rested">
+            <span>Enough, and feeling rested ✨</span>
+            <span class="percentage" id="rested">0%</span>
+        </div>
+        <div class="bar still_sleepy">
+            <span>Enough, but still sleepy 💤</span>
+            <span class="percentage" id="sleepy">0%</span>
+        </div>
+        <div class="bar weak">
+            <span>Not enough, but sleep is for the weak 💤</span>
+            <span class="percentage" id="weak">0%</span>
+        </div>
+        <div class="bar dead_inside">
+            <span>Not enough, feeling dead inside 😵</span>
+            <span class="percentage" id="inside">0%</span>
+        </div>
+
+        <!-- Arrow button to go back to the main another page -->
+        <button class="arrow-button" onclick="window.location.href='teacher_mood_dashboard.html'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4l-1.41 1.41 6.3 6.29H4v2h12.89l-6.3 6.29L12 20l8-8z"/></svg>
+        </button>        
+    </div>
+
+    <script type="module">
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+        // Initialize Firebase Realtime Database
+        const database = getDatabase();
+
+        // Fetch responses from Firebase
+        const sleepRef = ref(database, 'responses');
+
+        get(sleepRef).then(snapshot => {
+            if (snapshot.exists()) {
+                const responses = snapshot.val();
+                let totalResponses = 0;
+                let sleepCounts = {
+                    rested: 0,
+                    sleepy: 0,
+                    weak: 0,
+                    inside: 0
+                };
+
+                // Count sleep responses
+                Object.values(responses).forEach(response => {
+                    const sleepResponse = response.how_sleep.answer.split(' ')[0]; // Extract the response
+                    if (sleepCounts[sleepResponse] !== undefined) {
+                        sleepCounts[sleepResponse]++;
+                        totalResponses++;
+                    }
+                });
+
+                // Calculate and display percentages
+                document.getElementById('rested').textContent = `${((sleepCounts.rested / totalResponses) * 100).toFixed(1)}%`;
+                document.getElementById('sleepy').textContent = `${((sleepCounts.sleepy / totalResponses) * 100).toFixed(1)}%`;
+                document.getElementById('weak').textContent = `${((sleepCounts.weak / totalResponses) * 100).toFixed(1)}%`;
+                document.getElementById('inside').textContent = `${((sleepCounts.inside / totalResponses) * 100).toFixed(1)}%`;
+            } else {
+                console.log('No data available');
+            }
+        }).catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    </script>
+</body>
+</html>

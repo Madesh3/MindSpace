@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 800px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.left {
+    background: linear-gradient(135deg, #5e2bff, #9c2cff);
+    color: white;
+    flex: 1;
+    padding: 50px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.left h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.left p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.right {
+    background-color: #e3e3e3;
+    padding: 50px;
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-group .icon {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 50px;
+    color: #333;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sign-in {
+    background-color: black;
+    color: white;
+}
+
+.sign-up {
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+}
