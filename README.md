@@ -37,5 +37,5 @@ Throughout this project, we learned the importance of managing time and tasks ef
 
 # What's next for Mind Space
 
-Next for MindSpace, we're developing a mobile app for greater accessibility and adding a mental health resource hub to support students. We plan to expand the platform beyond schools to universities and even workplaces, increasing its impact on well-being across different environments.
+Next for MindSpace, we're developing a mobile app for greater accessibility and adding a mental health resource hub to support students. We plan to expand the platform beyond schools to universities and even workplaces, increasing its impact on well-being across different environments. We also plan to optimize our application. The files are currently organized to simply work. We want to work on authentication protocols, api secruities and introducing colours that will not dictate/have an effect while aswering the questions.  
 
